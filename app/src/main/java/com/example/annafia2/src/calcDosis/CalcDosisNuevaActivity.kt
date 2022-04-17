@@ -2,6 +2,7 @@ package com.example.annafia2.src.calcDosis
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.DeadObjectException
 import android.view.View
 import android.widget.*
 import com.example.annafia2.R
@@ -13,7 +14,6 @@ class CalcDosisNuevaActivity : AppCompatActivity() {
 
     lateinit var valueVol: TextView
     lateinit var valuePre: TextView
-    var uno: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +38,7 @@ class CalcDosisNuevaActivity : AppCompatActivity() {
         val peso = findViewById<EditText>(R.id.editTextNumberDecimal).text.toString()
         val cantAmp = findViewById<EditText>(R.id.editTextNumberDecimal2).text.toString()
         val inpDosi = findViewById<EditText>(R.id.editTextNumberDecimal3).text.toString()
+        val btnCalDosis = findViewById<Button>(R.id.button3)
 
 
         val medicine = intent.getSerializableExtra("medicine") as Medicine
@@ -78,9 +79,8 @@ class CalcDosisNuevaActivity : AppCompatActivity() {
         }
 
         presentSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            presentSpinner.onItem
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                valuePre.text = getNumericValues(listPreSpinner[p2])
+                valuePre.text = listPreSpinner[p2]
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -89,18 +89,29 @@ class CalcDosisNuevaActivity : AppCompatActivity() {
 
         }
 
-        val a: String = presentSpinner.itemse
+        val a = presentSpinner.selectedItem.toString()
+        val c = volumeCcSpiner.selectedItem.toString()
 
-        valueVol.text =
+        val ca: Double = getNumericValues(a).toDouble()
+        val cc: Double = c.toDouble()
 
+        btnCalDosis.setOnClickListener {
 
-//        microgramos total = presentacion x 1000 x cantidad de ampollas
-//          concentracion de la disulucion = migrogramos total / volumen
-//            infucion por hora = dodis deseada * peso real * 60 / consetacion de la disolucion
+            val cb: Double = cantAmp.toDouble()
+            val cd: Double = inpDosi.toDouble()
+            val ce: Double = peso.toDouble()
+            println(calDosis(ca, cb, cc, cd, ce))
+        }
+
 
     }
 
+
+//    microgramos total = presentacion x 1000 x cantidad de ampollas
+//    concentracion de la disulucion = migrogramos total / volumen
+//    infucion por hora = dodis deseada * peso real * 60 / consetacion de la disolucion
 //    a = presntacion , b = cantidad de ampollas , c = volumen cc, d = dosis deseada, e = peso real
+
     fun calDosis(a: Double, b: Double, c: Double , d: Double , e: Double): Double{
 
         val micTotal: Double = a * b * 1000
