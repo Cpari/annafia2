@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Annafia2">
         <activity
+            android:name=".src.calcDosis.CalcDosisEntranteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".src.calcDosis.ResultActivity"
+            android:exported="false" />
+        <activity
             android:name=".src.calcDosis.CalcDosisNuevaActivity"
             android:exported="false" />
         <activity

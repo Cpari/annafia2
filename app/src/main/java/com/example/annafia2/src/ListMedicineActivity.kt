@@ -9,12 +9,15 @@ import com.example.annafia2.R
 import com.example.annafia2.db.medicine.AppDatabase
 import com.example.annafia2.db.medicine.Medicine
 import com.example.annafia2.db.medicine.MedicineAdapter
+import com.example.annafia2.src.calcDosis.CalcDosisEntranteActivity
 import com.example.annafia2.src.calcDosis.CalcDosisNuevaActivity
 
 class ListMedicineActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_medicine)
+
+        val nameCard = intent.getStringExtra("dosis")
 
 
         var listaMedicines = emptyList<Medicine>()
@@ -31,13 +34,28 @@ class ListMedicineActivity : AppCompatActivity() {
 
         })
 
-        homeListMedicines.setOnItemClickListener { adapterView, view, i, l ->
+        if (nameCard == "dosis_nueva"){
 
-            val intent = Intent(this, CalcDosisNuevaActivity::class.java)
-            intent.putExtra("medicine", listaMedicines[i])
-            startActivity(intent)
+            homeListMedicines.setOnItemClickListener { adapterView, view, i, l ->
+
+                val intent = Intent(this, CalcDosisNuevaActivity::class.java)
+                intent.putExtra("medicine", listaMedicines[i])
+                startActivity(intent)
+
+            }
+
+        }else{
+
+            homeListMedicines.setOnItemClickListener { adapterView, view, i, l ->
+
+                val intent = Intent(this, CalcDosisEntranteActivity::class.java)
+                intent.putExtra("medicine", listaMedicines[i])
+                startActivity(intent)
+
+            }
 
         }
+
 
 
 

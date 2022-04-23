@@ -1,14 +1,14 @@
 package com.example.annafia2.src.calcDosis
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.DeadObjectException
 import android.view.View
 import android.widget.*
 import com.example.annafia2.R
 import com.example.annafia2.db.medicine.Medicine
-import java.io.StringWriter
 import java.lang.Double.parseDouble
+
 
 class CalcDosisNuevaActivity : AppCompatActivity() {
 
@@ -35,9 +35,9 @@ class CalcDosisNuevaActivity : AppCompatActivity() {
         //ingresa el usuario  peso volumen cc , cantidad de ampollas, dosis deseada
         val volumeCcSpiner = findViewById<Spinner>(R.id.spinner)
         val presentSpinner = findViewById<Spinner>(R.id.spinner2)
-        val peso = findViewById<EditText>(R.id.editTextNumberDecimal).text.toString()
-        val cantAmp = findViewById<EditText>(R.id.editTextNumberDecimal2).text.toString()
-        val inpDosi = findViewById<EditText>(R.id.editTextNumberDecimal3).text.toString()
+        val peso = findViewById<EditText>(R.id.editTextNumberDecimal)
+        val cantAmp = findViewById<EditText>(R.id.editTextNumberDecimal2)
+        val inpDosi = findViewById<EditText>(R.id.editTextNumberDecimal3)
         val btnCalDosis = findViewById<Button>(R.id.button3)
 
 
@@ -95,12 +95,23 @@ class CalcDosisNuevaActivity : AppCompatActivity() {
         val ca: Double = getNumericValues(a).toDouble()
         val cc: Double = c.toDouble()
 
+
         btnCalDosis.setOnClickListener {
 
-            val cb: Double = cantAmp.toDouble()
-            val cd: Double = inpDosi.toDouble()
-            val ce: Double = peso.toDouble()
-            println(calDosis(ca, cb, cc, cd, ce))
+
+            if(validarCampos(cantAmp, inpDosi, peso)){
+                val cb: Double = (cantAmp.text.toString()).toDouble()
+                val cd: Double = (inpDosi.text.toString()).toDouble()
+                val ce: Double = (peso.text.toString()).toDouble()
+                println(calDosis(ca,cb,cc,cd,ce))
+                val resultado = calDosis(ca,cb,cc,cd,ce)
+                val intent = Intent(this, ResultActivity::class.java)
+                intent.putExtra("resultado", resultado.toString())
+                startActivity(intent)
+            }else{
+                Toast.makeText(this, "No deje ningun campo vacio", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
 
@@ -112,7 +123,7 @@ class CalcDosisNuevaActivity : AppCompatActivity() {
 //    infucion por hora = dodis deseada * peso real * 60 / consetacion de la disolucion
 //    a = presntacion , b = cantidad de ampollas , c = volumen cc, d = dosis deseada, e = peso real
 
-    fun calDosis(a: Double, b: Double, c: Double , d: Double , e: Double): Double{
+    private fun calDosis(a: Double, b: Double, c: Double , d: Double , e: Double): Double{
 
         val micTotal: Double = a * b * 1000
         val conDiso: Double = micTotal / c
@@ -121,30 +132,18 @@ class CalcDosisNuevaActivity : AppCompatActivity() {
         return infuHor
     }
 
-
-
-/*    fun posSpiner(a: Spinner, b: Array<String>): String {
-        var c = StringWriter()
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, b)
-        a.adapter = adapter
-
-        a.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                c = b
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-
+//    funcion para validar los campos
+    private fun validarCampos(a: EditText, b: EditText, c: EditText): Boolean{
+        var result: Boolean = true
+        if (a.length() == 0 || b.length() == 0 || c.length() == 0){
+            result = false
         }
-
-        return c.toString();
-
-    }*/
+        return result
+    }
 
 
-    fun getNumericValues(cadena: String): String {
+//    funcion que optinen los numeros de un string
+    private fun getNumericValues(cadena: String): String {
 
         val sb = StringBuilder()
 

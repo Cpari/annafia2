@@ -19,8 +19,17 @@ class HomeActivity : AppCompatActivity() {
         val btnDosisEntrante = findViewById<LinearLayout>(R.id.linearLayout2)
         val btnPacientes = findViewById<LinearLayout>(R.id.linearLayout3)
 
+
+
         btnDosisNueva.setOnClickListener {
             val intent = Intent(this, ListMedicineActivity::class.java)
+            intent.putExtra("dosis", "dosis_nueva")
+            startActivity(intent)
+        }
+
+        btnDosisEntrante.setOnClickListener {
+            val intent = Intent(this, ListMedicineActivity::class.java)
+            intent.putExtra("dosis", "dosis_entrante")
             startActivity(intent)
         }
 
