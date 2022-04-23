@@ -49,7 +49,7 @@ class ListMedicineActivity : AppCompatActivity() {
             homeListMedicines.setOnItemClickListener { adapterView, view, i, l ->
 
                 val intent = Intent(this, CalcDosisEntranteActivity::class.java)
-                intent.putExtra("medicine", listaMedicines[i])
+                intent.putExtra("medicine_en", listaMedicines[i])
                 startActivity(intent)
 
             }
